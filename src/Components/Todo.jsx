@@ -1,9 +1,18 @@
-import  { useState } from 'react'
+import  { useEffect, useState } from 'react'
 import List from './List'
 import './Todo.css'
+
+const getLocalItems=()=>{
+    let list= localStorage.getItem('lists')
+    if(list){
+        return JSON.parse(localStorage.getItem('lists'))
+    }else{
+        return []
+    }
+}
 const Todo = () => {
     const[data, setData]= useState('')
-    const[item, setItem]= useState([])
+    const[item, setItem]= useState(getLocalItems())
     const[toggle, setToggle]= useState(true)
     const[edit, setEdit]= useState(null)
     const[newItem, setNewItem]= useState([])
@@ -81,7 +90,9 @@ const Todo = () => {
         setNewItem(newEditItem)
         setEdit(id)
     }
-  
+  useEffect(()=>{
+    localStorage.setItem('lists',JSON.stringify(item))
+  },[item])
      
 
   return (
